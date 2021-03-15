@@ -28,7 +28,7 @@
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",
         "symfony/yaml": "5.2.*",
-        "linotype/installers": "^1"
+        "linotype/installers": "^1.0"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.2",
