@@ -2,10 +2,11 @@
 
 namespace Linotype\Core\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Linotype\Core\Builder\ConfigBuilder;
+
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Linotype\Core\Repository\LinotypeMetaRepository;
+// use Linotype\Core\Repository\LinotypeMetaRepository;
 
 class LinotypeConfig
 {
@@ -44,10 +45,25 @@ class LinotypeConfig
     private $customJs;
     private $customCss;
 
-    function __construct(ContainerInterface $container, LinotypeMetaRepository $metaRepo)
+    function __construct() //ContainerInterface $container, LinotypeMetaRepository $metaRepo
     {
-        
-        $this->projectDir = $container->getParameter('kernel.project_dir');
+
+        $dir_test = dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/linotype-test';
+
+        $config = new ConfigBuilder($dir_test);
+        $config->load();
+        $linotype = $config->get();
+        dump( $linotype );
+
+
+
+
+
+
+
+        //odl code
+
+        $this->projectDir = dirname(dirname(dirname(dirname(dirname(__FILE__))))); //$container->getParameter('kernel.project_dir');
         
         $this->linotypePath = 'linotype';
         $this->linotypeDirectory = $this->projectDir . '/' . $this->linotypePath;
@@ -85,7 +101,7 @@ class LinotypeConfig
         $this->customJs = [];
         $this->customCss = [];
 
-        $this->metaRepo = $metaRepo;
+        // $this->metaRepo = $metaRepo;
 
         $this->load();
 
@@ -93,8 +109,8 @@ class LinotypeConfig
 
         self::$config = $this->getLinotypeSettings();
 
-        //dump( self::$config );
-        //die;
+        dump( self::$config );die;
+        
     }
 
     static function getConfig($key = null)
@@ -292,13 +308,15 @@ class LinotypeConfig
         //format context to get unique block key for drupal block_content field key
         if (isset($settings['context'])) {
             foreach ($settings['context'] as $context_key => $context) {
-                if ( ! isset( $context['save'] ) ) $context['save'] = 'meta';
-                // if ($context['save'] !== 'static') {
-                    $fieldConfig = $this->fieldsSetting[$context['field']];
-                    $settings['context'][$context_key]['field'] = $fieldConfig;
-                    $settings['context'][$context_key]['field_id'] = $context['field'];
-                    $settings['context'][$context_key]['key'] = $context_key;
-                    $settings['context'][$context_key]['field']['key'] = $id . '_' . $context_key;
+                if ( ! isset( $context['persist'] ) ) $context['persist'] = 'meta';
+                // if ($context['persist'] !== 'static') {
+                    if( isset($context['field']) && isset($this->fieldsSetting[$context['field']])){
+                        $fieldConfig = $this->fieldsSetting[$context['field']];
+                        $settings['context'][$context_key]['field'] = $fieldConfig;
+                        $settings['context'][$context_key]['field_id'] = $context['field'];
+                        $settings['context'][$context_key]['key'] = $context_key;
+                        $settings['context'][$context_key]['field']['key'] = $id . '_' . $context_key;
+                    }
                 // }
             }
         }
@@ -573,10 +591,10 @@ class LinotypeConfig
                         if (isset($context['field'])) {
 
                             //get value from db
-                            if ( isset( $context['field'] ) && is_array( $context['field'] ) ) {
-                                $metaEntity = $this->metaRepo->findOneBy([ 'context_key' => $item_key . '__' . $context_key ]);
-                                $context['value'] = $metaEntity ? $metaEntity->getContextValue() : '';
-                            }
+                            // if ( isset( $context['field'] ) && is_array( $context['field'] ) ) {
+                            //     $metaEntity = $this->metaRepo->findOneBy([ 'context_key' => $item_key . '__' . $context_key ]);
+                            //     $context['value'] = $metaEntity ? $metaEntity->getContextValue() : '';
+                            // }
 
                             $template_context[$item_key . '__' . $context_key] = $context;
                             
