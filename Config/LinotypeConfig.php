@@ -2,6 +2,9 @@
 
 namespace Linotype\Core\Config;
 
+use Linotype\Core\Builder\ActiveBuilder;
+use Linotype\Core\Builder\CurrentBuilder;
+
 class LinotypeConfig
 {
 
@@ -175,6 +178,30 @@ class LinotypeConfig
     public function addTheme(ThemeConfig $theme): self
     {
         $this->themes[ $theme->getId() ] = $theme;
+
+        return $this;
+    }
+
+    public function getActive(): ?ActiveBuilder
+    {   
+        return $this->active;
+    }
+
+    public function setActive(ActiveBuilder $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function getCurrent(): ?CurrentBuilder
+    {   
+        return $this->current;
+    }
+
+    public function setCurrent(CurrentBuilder $current): self
+    {
+        $this->current = $current;
 
         return $this;
     }

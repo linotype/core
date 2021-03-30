@@ -16,22 +16,26 @@ class ConfigBuilder
 
     private $linotype;
 
-    private $config;
+    private $directory;
 
-    function __construct($dir)
-    {
-        $this->linotype = new LinotypeConfig();
-        $this->config = new ConfigLoader($dir);
+    private $configLoader;
+
+    public function __construct($directory)
+    {   
+        $this->directory = $directory;
+        $this->configLoader = new ConfigLoader($directory);
     }
 
-    public function load() 
+    public function build() 
     {
-        $config = $this->config->get('linotype');
-        $this->linotype->setVersion( $config['version'] );
-        $this->linotype->setDebug( $config['debug'] );
-        $this->linotype->setPreview( $config['preview'] );
-        $this->linotype->setActiveTheme( $config['theme'] );   
-        foreach( $this->config->get('block') as $config_id => $config ) 
+        $linotype = new LinotypeConfig();
+        $config = $this->configLoader->get('linotype');
+        $linotype->setVersion( $config['version'] );
+        $linotype->setDebug( $config['debug'] );
+        $linotype->setPreview( $config['preview'] );
+        $linotype->setActiveTheme( $config['theme'] ); 
+
+        foreach( $this->configLoader->get('block') as $config_id => $config ) 
         {
             $item = new BlockConfig();
             $item->setID($config_id);
@@ -39,50 +43,93 @@ class ConfigBuilder
             $item->setAuthor($config['author']);
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
-            $item->setInfo($config);
             $item->setPackage($config['package']);
             $item->setParent($config['parent']);
             $item->setAccept($config['accept']);
             $item->setContext($config['context']);
-            // $item->setChildren($config['children']);
-            $this->linotype->addBlock( $item );
+            $item->setInfo( $config_id, $this->directory . '/Block' );
+            $linotype->addBlock( $item );
         }
-        foreach( $this->config->get('field') as $config_id => $config ) 
+
+        foreach( $this->configLoader->get('field') as $config_id => $config ) 
         {
             $item = new FieldConfig();
             $item->setID($config_id);
-            $this->linotype->addField( $item );
+            $item->setVersion($config['version']);
+            $item->setAuthor($config['author']);
+            $item->setName($config['name']);
+            $item->setDesc($config['desc']);
+            $item->setPackage($config['package']);
+            $item->setTitle($config['title']);
+            $item->setHelp($config['help']);
+            $item->setRequire($config['require']);
+            $item->setFormat($config['format']);
+            $item->setOption($config['option']);
+            $item->setInfo( $config_id, $this->directory . '/Field' );
+            $linotype->addField( $item );
         }
-        foreach( $this->config->get('helper') as $config_id => $config ) 
+
+        foreach( $this->configLoader->get('helper') as $config_id => $config ) 
         {
             $item = new HelperConfig();
             $item->setID($config_id);
-            $this->linotype->addHelper( $item );
+            $item->setVersion($config['version']);
+            $item->setAuthor($config['author']);
+            $item->setName($config['name']);
+            $item->setDesc($config['desc']);
+            $item->setMethode($config['methode']);
+            $item->setInfo( $config_id, $this->directory . '/Helper' );
+            $linotype->addHelper( $item );
         }
-        foreach( $this->config->get('module') as $config_id => $config ) 
+
+        foreach( $this->configLoader->get('module') as $config_id => $config ) 
         {
             $item = new ModuleConfig();
             $item->setID($config_id);
-            $this->linotype->addModule( $item );
+            $item->setVersion($config['version']);
+            $item->setAuthor($config['author']);
+            $item->setName($config['name']);
+            $item->setDesc($config['desc']);
+            $item->setLayout($config['layout']);
+            $item->setInfo( $config_id, $this->directory . '/Module' );
+            $linotype->addModule( $item );
         }
-        foreach( $this->config->get('template') as $config_id => $config ) 
+
+        foreach( $this->configLoader->get('template') as $config_id => $config ) 
         {
             $item = new TemplateConfig();
             $item->setID($config_id);
-            $this->linotype->addTemplate( $item );
+            $item->setVersion($config['version']);
+            $item->setAuthor($config['author']);
+            $item->setName($config['name']);
+            $item->setDesc($config['desc']);
+            $item->setLayout($config['layout']);
+            $item->setInfo( $config_id, $this->directory . '/Template' );
+            $linotype->addTemplate( $item );
         }
-        foreach( $this->config->get('theme') as $config_id => $config ) 
+
+        foreach( $this->configLoader->get('theme') as $config_id => $config ) 
         {
             $item = new ThemeConfig();
             $item->setID($config_id);
-            $this->linotype->addTheme( $item );
+            $item->setVersion($config['version']);
+            $item->setAuthor($config['author']);
+            $item->setName($config['name']);
+            $item->setDesc($config['desc']);
+            $item->setInfo( $config_id, $this->directory . '/Theme' );
+            $linotype->addTheme( $item );
         }
-        // $this->linotype->setCurrentTheme( $this->linotype->getTheme( $this->linotype->getActiveTheme() ) ); 
+
+        $linotype->setActive( ( new ActiveBuilder( $linotype ) )->get() );
+
+        $linotype->setCurrent( ( new CurrentBuilder( $linotype ) )->get() );
+
+        $this->linotype = $linotype;
     }
 
-    public function get() 
-    {
-        return $this->linotype;
+    public function get(): ?LinotypeConfig
+    {   
+        return $this->linotype ? $this->linotype : null;
     }
-    
+
 }

@@ -2,12 +2,14 @@
 
 namespace Linotype\Core\Config;
 
-use Linotype\Core\Config\Traits\DefaultConfig;
+use Linotype\Core\Config\Traits\DefaultTrait;
+use Linotype\Core\Config\Traits\LayoutTrait;
 
 class TemplateConfig
 {
 
-    use DefaultConfig;
+    use DefaultTrait;
+    use LayoutTrait;
 
     private $id;
 
@@ -21,5 +23,6 @@ class TemplateConfig
     
     private $info;
 
+    private $layout;
 
 }

@@ -2,7 +2,9 @@
 
 namespace Linotype\Core\Config\Traits;
 
-trait DefaultConfig
+use Linotype\Core\Config\Helper\InfoHelper;
+
+trait DefaultTrait
 {
     private $id;
 
@@ -76,14 +78,14 @@ trait DefaultConfig
         return $this;
     }
 
-    public function getInfo(): ?array
+    public function getInfo(): ?InfoHelper
     {
         return $this->info;
     }
 
-    public function setInfo(array $info): self
+    public function setInfo(string $id, string $dir)
     {
-        $this->info = $info;
+        $this->info = new InfoHelper($id, $dir);
 
         return $this;
     }

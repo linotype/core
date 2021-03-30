@@ -48,17 +48,10 @@ class LinotypeConfig
     function __construct() //ContainerInterface $container, LinotypeMetaRepository $metaRepo
     {
 
-        $dir_test = dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/linotype-test';
-
-        $config = new ConfigBuilder($dir_test);
-        $config->load();
+        $config = new ConfigBuilder( dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/linotype-test' );
+        $config->build();
         $linotype = $config->get();
         dump( $linotype );
-
-
-
-
-
 
 
         //odl code

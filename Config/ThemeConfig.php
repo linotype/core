@@ -2,12 +2,12 @@
 
 namespace Linotype\Core\Config;
 
-use Linotype\Core\Config\Traits\DefaultConfig;
+use Linotype\Core\Config\Traits\DefaultTrait;
 
 class ThemeConfig
 {
 
-    use DefaultConfig;
+    use DefaultTrait;
 
     private $id;
 
