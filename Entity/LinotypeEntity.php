@@ -2,10 +2,14 @@
 
 namespace Linotype\Core\Entity;
 
-use Linotype\Core\Builder\ActiveBuilder;
-use Linotype\Core\Builder\CurrentBuilder;
 use Linotype\Core\Repo\BlockRepo;
 use Linotype\Core\Repo\FieldRepo;
+use Linotype\Core\Repo\HelperRepo;
+use Linotype\Core\Repo\ModuleRepo;
+use Linotype\Core\Repo\TemplateRepo;
+use Linotype\Core\Repo\ThemeRepo;
+use Linotype\Core\Builder\ActiveBuilder;
+use Linotype\Core\Builder\CurrentBuilder;
 
 class LinotypeEntity
 {
@@ -106,70 +110,50 @@ class LinotypeEntity
         return $this;
     }
 
-    public function getHelpers(): ?array
+    public function getHelpers(): ?HelperRepo
     {
         return $this->helpers;
     }
 
-    public function getHelper(string $id = null): ?HelperEntity
+    public function setHelpers(HelperRepo $helpers): self
     {
-        return isset( $this->helpers[$id] ) ? $this->helpers[$id] : null;
-    }
-
-    public function addHelper(HelperEntity $helper): self
-    {
-        $this->helpers[ $helper->getId() ] = $helper;
+        $this->helpers = $helpers;
 
         return $this;
     }
 
-    public function getModules(): ?array
+    public function getModules(): ?ModuleRepo
     {
         return $this->modules;
     }
 
-    public function getModule(string $id = null): ?ModuleEntity
+    public function setModules(ModuleRepo $modules): self
     {
-        return isset( $this->modules[$id] ) ? $this->modules[$id] : null;
-    }
-
-    public function addModule(ModuleEntity $module): self
-    {
-        $this->modules[ $module->getId() ] = $module;
+        $this->modules = $modules;
 
         return $this;
     }
 
-    public function getTemplates(): ?array
+    public function getTemplates(): ?TemplateRepo
     {
         return $this->templates;
     }
 
-    public function getTemplate(string $id = null): ?TemplateEntity
+    public function setTemplates(TemplateRepo $templates): self
     {
-        return isset( $this->templates[$id] ) ? $this->templates[$id] : null;
-    }
-
-    public function addTemplate(TemplateEntity $template): self
-    {
-        $this->templates[ $template->getId() ] = $template;
+        $this->templates = $templates;
 
         return $this;
     }
 
-    public function getThemes(): ?array
+    public function getThemes(): ?ThemeRepo
     {
         return $this->themes;
     }
 
-    public function getTheme(string $id = null): ?ThemeEntity
-    {   
-        return isset( $this->themes[$id] ) ? $this->themes[$id] : null;
-    }
-
-    public function addTheme(ThemeEntity $theme): self
+    public function setThemes(ThemeRepo $themes): self
     {
-        $this->themes[ $theme->getId() ] = $theme;
+        $this->themes = $themes;
 
         return $this;
     }

@@ -12,6 +12,10 @@ use Linotype\Core\Entity\ThemeEntity;
 use Linotype\Core\Loader\ConfigLoader;
 use Linotype\Core\Repo\BlockRepo;
 use Linotype\Core\Repo\FieldRepo;
+use Linotype\Core\Repo\HelperRepo;
+use Linotype\Core\Repo\ModuleRepo;
+use Linotype\Core\Repo\TemplateRepo;
+use Linotype\Core\Repo\ThemeRepo;
 
 class ConfigBuilder
 {
@@ -75,6 +79,7 @@ class ConfigBuilder
         }
         $linotype->setFields( $fieldRepo );
 
+        $helperRepo = new HelperRepo();
         foreach( $this->configLoader->get('helper') as $config_id => $config ) 
         {
             $item = new HelperEntity();
@@ -85,9 +90,11 @@ class ConfigBuilder
             $item->setDesc($config['desc']);
             $item->setMethode($config['methode']);
             $item->setInfo( $config_id, $this->directory . '/Helper' );
-            $linotype->addHelper( $item );
+            $helperRepo->addHelper( $item );
         }
+        $linotype->setHelpers( $helperRepo );
 
+        $moduleRepo = new ModuleRepo();
         foreach( $this->configLoader->get('module') as $config_id => $config ) 
         {
             $item = new ModuleEntity();
@@ -98,9 +105,11 @@ class ConfigBuilder
             $item->setDesc($config['desc']);
             $item->setLayout($config['layout']);
             $item->setInfo( $config_id, $this->directory . '/Module' );
-            $linotype->addModule( $item );
+            $moduleRepo->addModule( $item );
         }
+        $linotype->setModules( $moduleRepo );
 
+        $templateRepo = new TemplateRepo();
         foreach( $this->configLoader->get('template') as $config_id => $config ) 
         {
             $item = new TemplateEntity();
@@ -111,9 +120,11 @@ class ConfigBuilder
             $item->setDesc($config['desc']);
             $item->setLayout($config['layout']);
             $item->setInfo( $config_id, $this->directory . '/Template' );
-            $linotype->addTemplate( $item );
+            $templateRepo->addTemplate( $item );
         }
+        $linotype->setTemplates( $templateRepo );
 
+        $themeRepo = new ThemeRepo();
         foreach( $this->configLoader->get('theme') as $config_id => $config ) 
         {
             $item = new ThemeEntity();
@@ -123,8 +134,9 @@ class ConfigBuilder
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
             $item->setInfo( $config_id, $this->directory . '/Theme' );
-            $linotype->addTheme( $item );
+            $themeRepo->addTheme( $item );
         }
+        $linotype->setThemes( $themeRepo );
 
         $linotype->setActive( ( new ActiveBuilder( $linotype ) )->get() );
 
