@@ -2,8 +2,8 @@
 
 namespace Linotype\Core\Builder;
 
-use Linotype\Core\Config\LinotypeConfig;
-use Linotype\Core\Config\ThemeConfig;
+use Linotype\Core\Entity\LinotypeEntity;
+use Linotype\Core\Entity\ThemeEntity;
 
 class ActiveBuilder
 {
@@ -20,17 +20,17 @@ class ActiveBuilder
 
     private $blocks;
 
-    function __construct( LinotypeConfig $linotype )
+    function __construct( LinotypeEntity $linotype )
     {
         $this->linotype = $linotype;
     }
 
-    public function getTheme(): ?ThemeConfig
+    public function getTheme(): ?ThemeEntity
     {
         return $this->theme;
     }
 
-    public function setTheme(ThemeConfig $theme): self
+    public function setTheme(ThemeEntity $theme): self
     {
         $this->theme = $theme;
 

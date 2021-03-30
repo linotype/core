@@ -1,8 +1,8 @@
 <?php
 
-namespace Linotype\Core\Config\Traits;
+namespace Linotype\Core\Entity\Traits;
 
-use Linotype\Core\Config\Helper\InfoHelper;
+use Linotype\Core\Helper\InfoHelper;
 
 trait DefaultTrait
 {

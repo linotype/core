@@ -304,8 +304,8 @@ class LinotypeConfig
                 if ( ! isset( $context['persist'] ) ) $context['persist'] = 'meta';
                 // if ($context['persist'] !== 'static') {
                     if( isset($context['field']) && isset($this->fieldsSetting[$context['field']])){
-                        $fieldConfig = $this->fieldsSetting[$context['field']];
-                        $settings['context'][$context_key]['field'] = $fieldConfig;
+                        $FieldEntity = $this->fieldsSetting[$context['field']];
+                        $settings['context'][$context_key]['field'] = $FieldEntity;
                         $settings['context'][$context_key]['field_id'] = $context['field'];
                         $settings['context'][$context_key]['key'] = $context_key;
                         $settings['context'][$context_key]['field']['key'] = $id . '_' . $context_key;

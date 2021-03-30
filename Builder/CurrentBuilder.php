@@ -2,7 +2,7 @@
 
 namespace Linotype\Core\Builder;
 
-use Linotype\Core\Config\LinotypeConfig;
+use Linotype\Core\Entity\LinotypeEntity;
 
 class CurrentBuilder
 {
@@ -19,7 +19,7 @@ class CurrentBuilder
 
     private $blocks;
 
-    function __construct( LinotypeConfig $linotype )
+    function __construct( LinotypeEntity $linotype )
     {
         $this->linotype = $linotype;
         $this->init();

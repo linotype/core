@@ -1,6 +1,6 @@
 <?php
 
-namespace Linotype\Core\Config\Helper;
+namespace Linotype\Core\Helper;
 
 class InfoHelper
 {
@@ -63,7 +63,7 @@ class InfoHelper
 
     public function getTemplate(): ?string
     {
-        return $this->template . '/';
+        return $this->template;
     }
 
     public function setTemplate(string $template): self

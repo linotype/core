@@ -2,14 +2,16 @@
 
 namespace Linotype\Core\Builder;
 
-use Linotype\Core\Config\LinotypeConfig;
-use Linotype\Core\Config\BlockConfig;
-use Linotype\Core\Config\FieldConfig;
-use Linotype\Core\Config\HelperConfig;
-use Linotype\Core\Config\ModuleConfig;
-use Linotype\Core\Config\TemplateConfig;
-use Linotype\Core\Config\ThemeConfig;
+use Linotype\Core\Entity\LinotypeEntity;
+use Linotype\Core\Entity\BlockEntity;
+use Linotype\Core\Entity\FieldEntity;
+use Linotype\Core\Entity\HelperEntity;
+use Linotype\Core\Entity\ModuleEntity;
+use Linotype\Core\Entity\TemplateEntity;
+use Linotype\Core\Entity\ThemeEntity;
 use Linotype\Core\Loader\ConfigLoader;
+use Linotype\Core\Repo\BlockRepo;
+use Linotype\Core\Repo\FieldRepo;
 
 class ConfigBuilder
 {
@@ -28,16 +30,17 @@ class ConfigBuilder
 
     public function build() 
     {
-        $linotype = new LinotypeConfig();
+        $linotype = new LinotypeEntity();
         $config = $this->configLoader->get('linotype');
         $linotype->setVersion( $config['version'] );
         $linotype->setDebug( $config['debug'] );
         $linotype->setPreview( $config['preview'] );
         $linotype->setActiveTheme( $config['theme'] ); 
 
+        $blockRepo = new BlockRepo();
         foreach( $this->configLoader->get('block') as $config_id => $config ) 
         {
-            $item = new BlockConfig();
+            $item = new BlockEntity();
             $item->setID($config_id);
             $item->setVersion($config['version']);
             $item->setAuthor($config['author']);
@@ -48,12 +51,14 @@ class ConfigBuilder
             $item->setAccept($config['accept']);
             $item->setContext($config['context']);
             $item->setInfo( $config_id, $this->directory . '/Block' );
-            $linotype->addBlock( $item );
+            $blockRepo->addBlock( $item );
         }
+        $linotype->setBlocks( $blockRepo );
 
+        $fieldRepo = new FieldRepo();
         foreach( $this->configLoader->get('field') as $config_id => $config ) 
         {
-            $item = new FieldConfig();
+            $item = new FieldEntity();
             $item->setID($config_id);
             $item->setVersion($config['version']);
             $item->setAuthor($config['author']);
@@ -66,12 +71,13 @@ class ConfigBuilder
             $item->setFormat($config['format']);
             $item->setOption($config['option']);
             $item->setInfo( $config_id, $this->directory . '/Field' );
-            $linotype->addField( $item );
+            $fieldRepo->addField( $item );
         }
+        $linotype->setFields( $fieldRepo );
 
         foreach( $this->configLoader->get('helper') as $config_id => $config ) 
         {
-            $item = new HelperConfig();
+            $item = new HelperEntity();
             $item->setID($config_id);
             $item->setVersion($config['version']);
             $item->setAuthor($config['author']);
@@ -84,7 +90,7 @@ class ConfigBuilder
 
         foreach( $this->configLoader->get('module') as $config_id => $config ) 
         {
-            $item = new ModuleConfig();
+            $item = new ModuleEntity();
             $item->setID($config_id);
             $item->setVersion($config['version']);
             $item->setAuthor($config['author']);
@@ -97,7 +103,7 @@ class ConfigBuilder
 
         foreach( $this->configLoader->get('template') as $config_id => $config ) 
         {
-            $item = new TemplateConfig();
+            $item = new TemplateEntity();
             $item->setID($config_id);
             $item->setVersion($config['version']);
             $item->setAuthor($config['author']);
@@ -110,7 +116,7 @@ class ConfigBuilder
 
         foreach( $this->configLoader->get('theme') as $config_id => $config ) 
         {
-            $item = new ThemeConfig();
+            $item = new ThemeEntity();
             $item->setID($config_id);
             $item->setVersion($config['version']);
             $item->setAuthor($config['author']);
@@ -127,7 +133,7 @@ class ConfigBuilder
         $this->linotype = $linotype;
     }
 
-    public function get(): ?LinotypeConfig
+    public function get(): ?LinotypeEntity
     {   
         return $this->linotype ? $this->linotype : null;
     }

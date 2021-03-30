@@ -1,10 +1,10 @@
 <?php
 
-namespace Linotype\Core\Config;
+namespace Linotype\Core\Entity;
 
-use Linotype\Core\Config\Traits\DefaultTrait;
+use Linotype\Core\Entity\Traits\DefaultTrait;
 
-class BaseConfig
+class ThemeEntity
 {
 
     use DefaultTrait;

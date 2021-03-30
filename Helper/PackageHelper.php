@@ -1,8 +1,8 @@
 <?php
 
-namespace Linotype\Core\Config;
+namespace Linotype\Core\Entity;
 
-class BlockPackageConfig
+class PackageHelper
 {
 
     private $id;

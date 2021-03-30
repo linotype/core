@@ -1,11 +1,11 @@
 <?php
 
-namespace Linotype\Core\Config;
+namespace Linotype\Core\Entity;
 
-use Linotype\Core\Config\Traits\DefaultTrait;
-use Linotype\Core\Config\Traits\LayoutTrait;
+use Linotype\Core\Entity\Traits\DefaultTrait;
+use Linotype\Core\Entity\Traits\LayoutTrait;
 
-class TemplateConfig
+class ModuleEntity
 {
 
     use DefaultTrait;

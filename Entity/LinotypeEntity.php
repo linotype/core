@@ -1,11 +1,13 @@
 <?php
 
-namespace Linotype\Core\Config;
+namespace Linotype\Core\Entity;
 
 use Linotype\Core\Builder\ActiveBuilder;
 use Linotype\Core\Builder\CurrentBuilder;
+use Linotype\Core\Repo\BlockRepo;
+use Linotype\Core\Repo\FieldRepo;
 
-class LinotypeConfig
+class LinotypeEntity
 {
 
     private $version;
@@ -80,36 +82,26 @@ class LinotypeConfig
         return $this;
     }
 
-    public function getBlocks(): ?array
+    public function getBlocks(): ?BlockRepo
     {
         return $this->blocks;
     }
 
-    public function getBlock(string $id = null): ?BlockConfig
+    public function setBlocks(BlockRepo $blocks): self
     {
-        return isset( $this->blocks[$id] ) ? $this->blocks[$id] : null;
-    }
-
-    public function addBlock(BlockConfig $block): self
-    {
-        $this->blocks[ $block->getId() ] = $block;
+        $this->blocks = $blocks;
 
         return $this;
     }
 
-    public function getFields(): ?array
+    public function getFields(): ?FieldRepo
     {
         return $this->fields;
     }
 
-    public function getField(string $id = null): ?FieldConfig
+    public function setFields(FieldRepo $fields): self
     {
-        return isset( $this->fields[$id] ) ? $this->fields[$id] : null;
-    }
-
-    public function addField(FieldConfig $field): self
-    {
-        $this->fields[ $field->getId() ] = $field;
+        $this->fields = $fields;
 
         return $this;
     }
@@ -119,12 +111,12 @@ class LinotypeConfig
         return $this->helpers;
     }
 
-    public function getHelper(string $id = null): ?HelperConfig
+    public function getHelper(string $id = null): ?HelperEntity
     {
         return isset( $this->helpers[$id] ) ? $this->helpers[$id] : null;
     }
 
-    public function addHelper(HelperConfig $helper): self
+    public function addHelper(HelperEntity $helper): self
     {
         $this->helpers[ $helper->getId() ] = $helper;
 
@@ -136,12 +128,12 @@ class LinotypeConfig
         return $this->modules;
     }
 
-    public function getModule(string $id = null): ?ModuleConfig
+    public function getModule(string $id = null): ?ModuleEntity
     {
         return isset( $this->modules[$id] ) ? $this->modules[$id] : null;
     }
 
-    public function addModule(ModuleConfig $module): self
+    public function addModule(ModuleEntity $module): self
     {
         $this->modules[ $module->getId() ] = $module;
 
@@ -153,12 +145,12 @@ class LinotypeConfig
         return $this->templates;
     }
 
-    public function getTemplate(string $id = null): ?TemplateConfig
+    public function getTemplate(string $id = null): ?TemplateEntity
     {
         return isset( $this->templates[$id] ) ? $this->templates[$id] : null;
     }
 
-    public function addTemplate(TemplateConfig $template): self
+    public function addTemplate(TemplateEntity $template): self
     {
         $this->templates[ $template->getId() ] = $template;
 
@@ -170,12 +162,12 @@ class LinotypeConfig
         return $this->themes;
     }
 
-    public function getTheme(string $id = null): ?ThemeConfig
+    public function getTheme(string $id = null): ?ThemeEntity
     {   
         return isset( $this->themes[$id] ) ? $this->themes[$id] : null;
     }
 
-    public function addTheme(ThemeConfig $theme): self
+    public function addTheme(ThemeEntity $theme): self
     {
         $this->themes[ $theme->getId() ] = $theme;
 

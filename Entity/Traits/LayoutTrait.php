@@ -1,6 +1,6 @@
 <?php
 
-namespace Linotype\Core\Config\Traits;
+namespace Linotype\Core\Entity\Traits;
 
 trait LayoutTrait
 {
