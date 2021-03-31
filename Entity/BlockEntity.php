@@ -2,14 +2,19 @@
 
 namespace Linotype\Core\Entity;
 
+use Linotype\Core\Context\BlockContext;
 use Linotype\Core\Entity\Traits\DefaultTrait;
+use Linotype\Core\Entity\Traits\KeyTrait;
 
 class BlockEntity 
 {
 
     use DefaultTrait;
+    use KeyTrait;
 
     private $id;
+
+    private $key;
 
     private $version;
 
@@ -67,12 +72,12 @@ class BlockEntity
         return $this;
     }
 
-    public function getContext(): ?array
+    public function getContext(): ?BlockContext
     {
         return $this->context;
     }
 
-    public function setContext(array $context): self
+    public function setContext(BlockContext $context): self
     {
         $this->context = $context;
 

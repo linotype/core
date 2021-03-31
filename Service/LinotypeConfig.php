@@ -3,7 +3,7 @@
 namespace Linotype\Core\Service;
 
 use Linotype\Core\Builder\ConfigBuilder;
-
+use Linotype\Core\Render\TemplateRender;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 // use Linotype\Core\Repository\LinotypeMetaRepository;
@@ -48,10 +48,12 @@ class LinotypeConfig
     function __construct() //ContainerInterface $container, LinotypeMetaRepository $metaRepo
     {
 
-        $config = new ConfigBuilder( dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/linotype-test' );
-        $config->build();
-        $linotype = $config->get();
-        dump( $linotype );
+        $configBuilder = new ConfigBuilder( dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/linotype-test' );
+        $configBuilder->build();
+        $linotype = $configBuilder->get();
+
+        $test = $linotype->getCurrent()->render()['footer__poweredby']->getContext();
+        dump( $test->getKey('text')->getValue() );
 
 
         //odl code
@@ -102,7 +104,7 @@ class LinotypeConfig
 
         self::$config = $this->getLinotypeSettings();
 
-        dump( self::$config );die;
+        dump( self::$config['templates']['Page']['blocks'] );die;
         
     }
 

@@ -2,6 +2,8 @@
 
 namespace Linotype\Core\Builder;
 
+use Linotype\Core\Context\BlockContext;
+use Linotype\Core\Context\BlockContextItem;
 use Linotype\Core\Entity\LinotypeEntity;
 use Linotype\Core\Entity\BlockEntity;
 use Linotype\Core\Entity\FieldEntity;
@@ -10,6 +12,7 @@ use Linotype\Core\Entity\ModuleEntity;
 use Linotype\Core\Entity\TemplateEntity;
 use Linotype\Core\Entity\ThemeEntity;
 use Linotype\Core\Loader\ConfigLoader;
+use Linotype\Core\Repo\BlockContextList;
 use Linotype\Core\Repo\BlockRepo;
 use Linotype\Core\Repo\FieldRepo;
 use Linotype\Core\Repo\HelperRepo;
@@ -53,7 +56,26 @@ class ConfigBuilder
             $item->setPackage($config['package']);
             $item->setParent($config['parent']);
             $item->setAccept($config['accept']);
-            $item->setContext($config['context']);
+            $blockContext = new BlockContext();
+            foreach( $config['context'] as $context_id => $context_value ) 
+            {
+                $context_item = new BlockContextItem();
+                $context_item->setID($context_id);
+                $context_item->setName($context_value['name']);
+                // $context_item->setDesc($context_value['desc']);
+                $context_item->setField($context_value['field']);
+                // $context_item->setOption($context_value['option']);
+                $context_item->setPersist($context_value['persist']);
+                // $context_item->setValue($context_value['value']);
+                $context_item->setDefault(isset($context_value['default'])?$context_value['default']:'');
+                // $context_item->setPreview($context_value['preview']);
+                $context_item->setFormat($context_value['format']);
+                $context_item->setDebug($context_value['debug']);
+                $context_item->setJs($context_value['js']);
+                $context_item->setCss($context_value['css']);
+                $blockContext->addContext($context_item);
+            }
+            $item->setContext( $blockContext );
             $item->setInfo( $config_id, $this->directory . '/Block' );
             $blockRepo->addBlock( $item );
         }
@@ -140,7 +162,7 @@ class ConfigBuilder
 
         $linotype->setActive( ( new ActiveBuilder( $linotype ) )->get() );
 
-        $linotype->setCurrent( ( new CurrentBuilder( $linotype ) )->get() );
+        $linotype->setCurrent( new CurrentBuilder( $linotype ) );
 
         $this->linotype = $linotype;
     }
