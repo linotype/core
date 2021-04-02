@@ -27,14 +27,11 @@ class ThemeRender
         $this->output = [];
         foreach( $this->theme->getMap() as $item_key => $item ) {
             
-                //clone module from defaults
-                $template = (new DeepCopy())->copy( $this->templates->findById($item['template']) );
-                
-                //set unique module key
-                // $template->setKey($item_key);
-
-                //get template render
-                $this->output[$item_key] = $this->TemplateRender->render($template);
+            //clone module from defaults
+            $template = (new DeepCopy())->copy( $this->templates->findById($item['template']) );
+            
+            //get template render
+            $this->output[$item_key] = $this->TemplateRender->render($template);
 
         }
         return $this->output;

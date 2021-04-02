@@ -27,7 +27,6 @@ class CurrentBuilder
     {
         $this->theme = $linotype->getThemes()->getTheme( $linotype->getActiveTheme() );
         $this->template = new TemplateRender( $linotype );
-        
     }
 
     public function render(TemplateEntity $template): ?array

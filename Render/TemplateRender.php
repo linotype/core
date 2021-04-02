@@ -15,7 +15,6 @@ class TemplateRender
 
     public function __construct( LinotypeEntity $linotype)
     {
-        
         $this->linotype = $linotype;
         $this->templates = $linotype->getTemplates();
         $this->modules = $linotype->getModules();
