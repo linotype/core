@@ -3,7 +3,10 @@
 namespace Linotype\Core\Builder;
 
 use Linotype\Core\Entity\LinotypeEntity;
+use Linotype\Core\Entity\TemplateEntity;
+use Linotype\Core\Entity\ThemeEntity;
 use Linotype\Core\Render\TemplateRender;
+use Linotype\Core\Repo\ThemeRepo;
 
 class CurrentBuilder
 {
@@ -22,28 +25,19 @@ class CurrentBuilder
 
     function __construct( LinotypeEntity $linotype )
     {
-        $this->template = new TemplateRender( 'Page', $linotype );
-        return $this;
+        $this->theme = $linotype->getThemes()->getTheme( $linotype->getActiveTheme() );
+        $this->template = new TemplateRender( $linotype );
+        
     }
 
-    public function render(): ?array
+    public function render(TemplateEntity $template): ?array
     {
-        return $this->template->render();
+        return $this->template->render($template);
     }
     
-
-    public function getTemplate(): ?array
+    public function getTheme(): ?ThemeEntity
     {
-        return $this->methode;
+        return $this->theme;
     }
-
-    public function setTemplate(array $methode): self
-    {
-        $this->methode = $methode;
-
-        return $this;
-    }
-
-    
 
 }

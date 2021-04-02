@@ -36,6 +36,9 @@ class ConfigLoader
                 $id = $file->getFilenameWithoutExtension();
                 $path = $file->getPathname();
                 $contents = Yaml::parse( file_get_contents($path) );
+                if ( isset( $config[ key($contents) ][$id] ) ) {
+                    throw new \Exception('Linotype: Config Yaml "' . key($contents) . '" with id "' . $id . '" already exist.');
+                }
                 $processor = new Processor();
                 switch(key($contents)){
                     case 'block':

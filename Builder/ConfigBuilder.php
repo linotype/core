@@ -76,7 +76,7 @@ class ConfigBuilder
                 $blockContext->addContext($context_item);
             }
             $item->setContext( $blockContext );
-            $item->setInfo( $config_id, $this->directory . '/Block' );
+            $item->setInfo( 'block', $config_id, $this->directory . '/Block' );
             $blockRepo->addBlock( $item );
         }
         $linotype->setBlocks( $blockRepo );
@@ -96,7 +96,7 @@ class ConfigBuilder
             $item->setRequire($config['require']);
             $item->setFormat($config['format']);
             $item->setOption($config['option']);
-            $item->setInfo( $config_id, $this->directory . '/Field' );
+            $item->setInfo( 'field', $config_id, $this->directory . '/Field' );
             $fieldRepo->addField( $item );
         }
         $linotype->setFields( $fieldRepo );
@@ -111,7 +111,7 @@ class ConfigBuilder
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
             $item->setMethode($config['methode']);
-            $item->setInfo( $config_id, $this->directory . '/Helper' );
+            $item->setInfo( 'helper', $config_id, $this->directory . '/Helper' );
             $helperRepo->addHelper( $item );
         }
         $linotype->setHelpers( $helperRepo );
@@ -126,7 +126,7 @@ class ConfigBuilder
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
             $item->setLayout($config['layout']);
-            $item->setInfo( $config_id, $this->directory . '/Module' );
+            $item->setInfo( 'module', $config_id, $this->directory . '/Module' );
             $moduleRepo->addModule( $item );
         }
         $linotype->setModules( $moduleRepo );
@@ -141,7 +141,7 @@ class ConfigBuilder
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
             $item->setLayout($config['layout']);
-            $item->setInfo( $config_id, $this->directory . '/Template' );
+            $item->setInfo( 'template', $config_id, $this->directory . '/Template' );
             $templateRepo->addTemplate( $item );
         }
         $linotype->setTemplates( $templateRepo );
@@ -155,12 +155,13 @@ class ConfigBuilder
             $item->setAuthor($config['author']);
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
-            $item->setInfo( $config_id, $this->directory . '/Theme' );
+            $item->setMap($config['map']);
+            $item->setInfo( 'theme', $config_id, $this->directory . '/Theme' );
             $themeRepo->addTheme( $item );
         }
         $linotype->setThemes( $themeRepo );
 
-        $linotype->setActive( ( new ActiveBuilder( $linotype ) )->get() );
+        // $linotype->setActive( new ActiveBuilder( $linotype ) );
 
         $linotype->setCurrent( new CurrentBuilder( $linotype ) );
 

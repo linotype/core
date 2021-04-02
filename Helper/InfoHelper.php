@@ -15,13 +15,39 @@ class InfoHelper
 
     private $style;
     
-    public function __construct( $id, $dir )
+    public function __construct( $type, $id, $dir )
     {
         $this->dir = $dir . '/' . $id;
-        $this->path = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id;
-        $this->template = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id . '/' . $id . '.twig';
-        $this->script = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id . '/' . $id . '.js';
-        $this->style = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id . '/' . $id . '.scss';
+        switch($type){
+            case 'block':
+                $this->path = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id;
+                $this->template = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/' . $id . '.twig';
+                $this->script = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/' . $id . '.js';
+                $this->style = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/' . $id . '.scss';
+            break;
+            case 'field':
+                $this->path = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id;
+                $this->template = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/' . $id . '.twig';
+                $this->script = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/' . $id . '.js';
+                $this->style = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/' . $id . '.scss';
+            break;
+            case 'helper':
+                $this->path = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id;
+            break;
+            case 'module':
+                $this->path = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id;
+            break;
+            case 'template':
+                $this->path = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id;
+            break;
+            case 'theme':
+                $this->path = str_replace( dirname( dirname( $dir ) ), '', $dir ) . '/' . $id;
+                $this->template = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/index.twig';
+                $this->script = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/assets/js/frontend.js';
+                $this->style = str_replace( dirname( $dir ), '', $dir ) . '/' . $id . '/assets/js/frontend.scss';
+            break;
+        }
+        
         return $this;
     }
 

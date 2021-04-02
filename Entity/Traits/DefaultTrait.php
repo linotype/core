@@ -8,6 +8,8 @@ trait DefaultTrait
 {
     private $id;
 
+    private $cssClass;
+
     private $version;
 
     private $author;
@@ -26,6 +28,20 @@ trait DefaultTrait
     public function setID(string $id): self
     {
         $this->id = $id;
+
+        $this->setCssClass($id);
+
+        return $this;
+    }
+
+    public function getCssClass(): ?string
+    {
+        return $this->cssClass;
+    }
+
+    public function setCssClass(string $cssClass): self
+    {
+        $this->cssClass = 'block--' . strtolower( preg_replace('/([a-z])([A-Z])/s','$1-$2', $cssClass ) );
 
         return $this;
     }
@@ -83,9 +99,9 @@ trait DefaultTrait
         return $this->info;
     }
 
-    public function setInfo(string $id, string $dir)
+    public function setInfo(string $type, string $id, string $dir)
     {
-        $this->info = new InfoHelper($id, $dir);
+        $this->info = new InfoHelper($type, $id, $dir);
 
         return $this;
     }

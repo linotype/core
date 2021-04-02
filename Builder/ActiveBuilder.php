@@ -4,6 +4,7 @@ namespace Linotype\Core\Builder;
 
 use Linotype\Core\Entity\LinotypeEntity;
 use Linotype\Core\Entity\ThemeEntity;
+use Linotype\Core\Render\ThemeRender;
 
 class ActiveBuilder
 {
@@ -22,26 +23,12 @@ class ActiveBuilder
 
     function __construct( LinotypeEntity $linotype )
     {
-        $this->linotype = $linotype;
+        $this->theme = new ThemeRender( $linotype );
     }
 
-    public function getTheme(): ?ThemeEntity
+    public function render(string $theme_id): ?array
     {
-        return $this->theme;
-    }
-
-    public function setTheme(ThemeEntity $theme): self
-    {
-        $this->theme = $theme;
-
-        return $this;
-    }
-
-    public function get(): ?self
-    {
-        $active = $this;
-        unset($active->linotype);
-        return $active;
+        return $this->theme->render($theme_id);
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Linotype\Core\Render;
 
+use DeepCopy\DeepCopy;
 use Linotype\Core\Entity\LinotypeEntity;
 use Linotype\Core\Entity\ModuleEntity;
 
@@ -25,7 +26,7 @@ class ModuleRender
             if ( isset( $item['block'] ) && $item['block'] !== "" ) {
 
                 //clone block from defaults
-                $block = clone $this->blocks->findById($item['block']);
+                $block = (new DeepCopy())->copy( $this->blocks->findById($item['block']) );
                 
                 //create unique block key with module key reference 
                 if( $this->module->getKey() ) $item_id = $this->module->getKey() . '__' . $item_id;

@@ -25,5 +25,18 @@ class ThemeEntity
     
     private $info;
 
+    private $map;
+    
+    public function getMap(): ?array
+    {
+        return $this->map;
+    }
+
+    public function setMap(array $map): self
+    {
+        $this->map = $map;
+
+        return $this;
+    }
 
 }

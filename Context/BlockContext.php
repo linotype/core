@@ -18,7 +18,7 @@ class BlockContext
         return isset( $this->contexts[$id] ) ? $this->contexts[$id] : null;
     }
 
-    public function getAll(): ?self
+    public function getAll(): ?array
     {
         return $this->contexts;
     }
@@ -26,6 +26,13 @@ class BlockContext
     public function getKey($id): ?BlockContextItem
     {
         return isset( $this->contexts[$id] ) ? $this->contexts[$id] : null;
+    }
+
+    public function setKey($id, $value): self
+    {
+        $this->contexts[$id] = $value;
+
+        return $this;
     }
 
     public function addContext(BlockContextItem $context): self

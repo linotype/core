@@ -2,7 +2,9 @@
 
 namespace Linotype\Core\Render;
 
+use DeepCopy\DeepCopy;
 use Linotype\Core\Entity\LinotypeEntity;
+use Linotype\Core\Entity\TemplateEntity;
 
 class TemplateRender
 {
@@ -11,22 +13,29 @@ class TemplateRender
 
     private $template;
 
-    public function __construct(string $template_id, LinotypeEntity $linotype)
+    public function __construct( LinotypeEntity $linotype)
     {
+        
         $this->linotype = $linotype;
-        $this->template = $linotype->getTemplates()->getTemplate($template_id);
+        $this->templates = $linotype->getTemplates();
         $this->modules = $linotype->getModules();
         $this->blocks = $linotype->getBlocks();
     }
 
-    public function render()
+    public function render(TemplateEntity $template)
     {
+        $this->template = $template;
+        
         $this->output = [];
         foreach( $this->template->getLayout() as $item_key => $item ) {
+
+            //create unique block key with module key reference
+            if( $this->template->getKey() ) $item_key = $this->template->getKey() . '__' . $item_key;
+
             if ( isset( $item['module'] ) && $item['module'] !== "" ) {
 
                 //clone module from defaults
-                $module = clone $this->modules->findById($item['module']);
+                $module = (new DeepCopy())->copy( $this->modules->findById($item['module']) );
                 
                 //set unique module key
                 $module->setKey($item_key);
@@ -42,13 +51,16 @@ class TemplateRender
             } else if ( isset( $item['block'] ) && $item['block'] !== "" ) {
             
                 //clone block from defaults
-                $block = clone $this->blocks->findById($item['block']);
-                
+                $block = (new DeepCopy())->copy( $this->blocks->findById($item['block']) );
+
                 //set unique module key
                 $block->setKey($item_key);
+              
+                //get blocks from the module
+                $blockRender = new BlockRender( $block, $this->linotype );
 
                 //add block to output
-                $this->output[$item_key] = $block;
+                $this->output[$item_key] = $blockRender->render( $item['override'] );
             
             }
         }
