@@ -113,15 +113,15 @@ class BlockContextItem
     public function setPersist(string $persist = 'static'): self
     {
         if ( in_array( $persist, ['static','meta','option'] ) ) {
-            $this->desc = $persist;
+            $this->persist = $persist;
         } else {
-            $this->desc = 'static';
+            $this->persist = 'static';
         }
         
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getValue()
     {
         if ( $this->value ) {
             $value = $this->value;
@@ -131,7 +131,7 @@ class BlockContextItem
         return $value;
     }
 
-    public function setValue(string $value): self
+    public function setValue($value = ''): self
     {
         $this->value = $value;
 

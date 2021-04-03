@@ -51,10 +51,14 @@ class TemplateRender
             
                 //clone block from defaults
                 $block = (new DeepCopy())->copy( $this->blocks->findById($item['block']) );
-
+                
                 //set unique module key
                 $block->setKey($item_key);
-              
+                
+                if ( isset( $item['children'] ) && is_array( $item['children'] ) && ! empty( $item['children'] ) ) {
+                    $block->setChildren( $this->renderChildren( $item['children'] ) );
+                }
+
                 //get blocks from the module
                 $blockRender = new BlockRender( $block, $this->linotype );
 
@@ -63,7 +67,30 @@ class TemplateRender
             
             }
         }
+        
         return $this->output;
+    }
+
+    public function renderChildren($children)
+    {
+        $output = [];
+        foreach( $children as $child_key => $child ) {
+            
+            $block = (new DeepCopy())->copy( $this->blocks->findById($child['block']) );
+
+            //get blocks from the module
+            $blockRender = new BlockRender( $block, $this->linotype );
+
+            if ( isset( $child['children'] ) && is_array( $child['children'] ) && ! empty( $child['children'] ) ) {
+                $block->setChildren( $this->renderChildren( $child['children'] ) );
+            }
+
+            //add block to output
+            $output[ $child_key ] = $blockRender->render( isset( $child['override'] ) ? $child['override'] : [] );
+        
+        }
+        
+        return $output;
     }
 
 }

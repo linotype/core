@@ -9,8 +9,11 @@ class LinotypeCore
 
     private $linotype;
 
-    public function __construct()
+    public static $db;
+
+    public function __construct($metaRepo)
     {
+        self::$db = $metaRepo;
         $working_dir = dirname(dirname(dirname(dirname(__FILE__)))) . '/linotype-test';
         $configBuilder = new ConfigBuilder($working_dir);
         $configBuilder->build();

@@ -11,7 +11,7 @@ class BlockContext
 
     private $path;
 
-    private $contexts;
+    private $contexts = [];
 
     public function findById($id): ?BlockContextItem
     {   

@@ -15,6 +15,7 @@ class ModuleRender
 
     public function __construct(ModuleEntity $module, LinotypeEntity $linotype)
     {
+        $this->linotype = $linotype;
         $this->module = $module;
         $this->blocks = $linotype->getBlocks();
     }
@@ -27,15 +28,18 @@ class ModuleRender
 
                 //clone block from defaults
                 $block = (new DeepCopy())->copy( $this->blocks->findById($item['block']) );
-                
+
                 //create unique block key with module key reference 
                 if( $this->module->getKey() ) $item_id = $this->module->getKey() . '__' . $item_id;
 
                 //set block key
                 $block->setKey($item_id);
+              
+                //get blocks from the module
+                $blockRender = new BlockRender( $block, $this->linotype );
 
                 //add block to output
-                $this->output[$block->getKey()] = $block;
+                $this->output[$block->getKey()] = $blockRender->render( $item['override'] );
             
             }
         }
