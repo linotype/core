@@ -74,7 +74,7 @@ class BlockContextItem
         return $this->desc;
     }
 
-    public function setDesc(string $desc): self
+    public function setDesc($desc): self
     {
         $this->desc = $desc;
 
@@ -98,7 +98,7 @@ class BlockContextItem
         return $this->option;
     }
 
-    public function setOption(array $option): self
+    public function setOption( $option = []): self
     {
         $this->option = $option;
 
@@ -143,7 +143,7 @@ class BlockContextItem
         return $this->default;
     }
 
-    public function setDefault(string $default): self
+    public function setDefault($default = ''): self
     {
         $this->default = $default;
 
@@ -155,7 +155,7 @@ class BlockContextItem
         return $this->preview;
     }
 
-    public function setPreview(string $preview): self
+    public function setPreview($preview = ''): self
     {
         $this->preview = $preview;
 

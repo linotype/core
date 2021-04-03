@@ -22,7 +22,6 @@ class ThemeRender
 
     public function render(string $theme_id)
     {
-        dump( 'theme' );
         $this->theme = $this->themes->getTheme($theme_id);
 
         $this->output = [];
