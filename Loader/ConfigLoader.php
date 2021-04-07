@@ -30,7 +30,7 @@ class ConfigLoader
     {
         $config = ['block' => [],'field' => [],'helper' => [],'module' => [],'template' => [],'theme' => [], 'linotype' => []];
         $finder = new Finder();
-        $finder->files()->name(['*.yml', '*.yaml'])->in($this->dir);
+        $finder->files()->name(['*.yml', '*.yaml'])->in($this->dir)->exclude('node_modules');
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
                 $id = $file->getFilenameWithoutExtension();

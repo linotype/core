@@ -3,6 +3,8 @@
 namespace Linotype\Core\Entity;
 
 use Linotype\Core\Context\BlockContext;
+use Linotype\Core\Entity\Traits\CustomCssTrait;
+use Linotype\Core\Entity\Traits\CustomJsTrait;
 use Linotype\Core\Entity\Traits\DefaultTrait;
 use Linotype\Core\Entity\Traits\KeyTrait;
 
@@ -11,6 +13,8 @@ class BlockEntity
 
     use DefaultTrait;
     use KeyTrait;
+    use CustomJsTrait;
+    use CustomCssTrait;
 
     private $id;
 
@@ -35,6 +39,10 @@ class BlockEntity
     private $context;
     
     private $children;
+
+    private $customJs;
+
+    private $customCss;
 
     public function getPackage(): ?array
     {
