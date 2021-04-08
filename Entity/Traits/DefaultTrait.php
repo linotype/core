@@ -8,6 +8,8 @@ trait DefaultTrait
 {
     private $id;
 
+    private $slug;
+
     private $cssClass;
 
     private $version;
@@ -30,6 +32,20 @@ trait DefaultTrait
         $this->id = $id;
 
         $this->setCssClass($id);
+
+        $this->setSlug($id);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = strtolower( preg_replace('/([a-z])([A-Z])/s','$1-$2', $slug ) );
 
         return $this;
     }
