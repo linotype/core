@@ -38,6 +38,9 @@ class BlockRender
                             case 'value':
                                 $this->block->getContext()->getKey($contextKey)->setValue( $override_value );
                             break;
+                            case 'default':
+                                $this->block->getContext()->getKey($contextKey)->setDefault( $override_value );
+                            break;
                             case 'css':
                                 $this->block->getContext()->getKey($contextKey)->setCss( $override_value );
                             break;
