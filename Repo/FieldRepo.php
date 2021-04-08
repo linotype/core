@@ -18,6 +18,16 @@ class FieldRepo
         return isset( $this->fields[$id] ) ? $this->fields[$id] : null;
     }
 
+    public function findBySlug($slug): ?FieldEntity
+    {   
+        foreach( $this->fields as $field ) {
+            if ( $field->getSlug() == $slug ) {
+                return $field;
+            }
+        }
+        return null;
+    }
+
     public function findByAuthor($author): ?array
     {   
         $fieldsByAuthor = [];
@@ -29,7 +39,7 @@ class FieldRepo
         return $fieldsByAuthor;
     }
 
-    public function getFields(): ?self
+    public function getAll(): ?array
     {
         return $this->fields;
     }

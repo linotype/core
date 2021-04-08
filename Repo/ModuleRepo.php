@@ -18,6 +18,16 @@ class ModuleRepo
         return isset( $this->modules[$id] ) ? $this->modules[$id] : null;
     }
 
+    public function findBySlug($slug): ?ModuleEntity
+    {   
+        foreach( $this->modules as $module ) {
+            if ( $module->getSlug() == $slug ) {
+                return $module;
+            }
+        }
+        return null;
+    }
+
     public function findByAuthor($author): ?array
     {   
         $modulesByAuthor = [];
@@ -29,7 +39,7 @@ class ModuleRepo
         return $modulesByAuthor;
     }
 
-    public function getModules(): ?self
+    public function getAll(): ?array
     {
         return $this->modules;
     }

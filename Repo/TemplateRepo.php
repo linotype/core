@@ -18,6 +18,16 @@ class TemplateRepo
         return isset( $this->templates[$id] ) ? $this->templates[$id] : null;
     }
 
+    public function findBySlug($slug): ?TemplateEntity
+    {   
+        foreach( $this->templates as $template ) {
+            if ( $template->getSlug() == $slug ) {
+                return $template;
+            }
+        }
+        return null;
+    }
+
     public function findByAuthor($author): ?array
     {   
         $templatesByAuthor = [];
@@ -29,7 +39,7 @@ class TemplateRepo
         return $templatesByAuthor;
     }
 
-    public function getTemplates(): ?self
+    public function getAll(): ?array
     {
         return $this->templates;
     }

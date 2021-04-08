@@ -18,6 +18,16 @@ class HelperRepo
         return isset( $this->helpers[$id] ) ? $this->helpers[$id] : null;
     }
 
+    public function findBySlug($slug): ?HelperEntity
+    {   
+        foreach( $this->helpers as $helper ) {
+            if ( $helper->getSlug() == $slug ) {
+                return $helper;
+            }
+        }
+        return null;
+    }
+
     public function findByAuthor($author): ?array
     {   
         $helpersByAuthor = [];
@@ -29,7 +39,7 @@ class HelperRepo
         return $helpersByAuthor;
     }
 
-    public function getHelpers(): ?self
+    public function getAll(): ?array
     {
         return $this->helpers;
     }

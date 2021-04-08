@@ -18,6 +18,16 @@ class ThemeRepo
         return isset( $this->themes[$id] ) ? $this->themes[$id] : null;
     }
 
+    public function findBySlug($slug): ?ThemeEntity
+    {   
+        foreach( $this->themes as $theme ) {
+            if ( $theme->getSlug() == $slug ) {
+                return $theme;
+            }
+        }
+        return null;
+    }
+
     public function findByAuthor($author): ?array
     {   
         $themesByAuthor = [];
@@ -29,7 +39,7 @@ class ThemeRepo
         return $themesByAuthor;
     }
 
-    public function getThemes(): ?self
+    public function getAll(): ?array
     {
         return $this->themes;
     }

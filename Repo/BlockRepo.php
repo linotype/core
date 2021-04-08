@@ -18,6 +18,16 @@ class BlockRepo
         return isset( $this->blocks[$id] ) ? $this->blocks[$id] : null;
     }
 
+    public function findBySlug($slug): ?BlockEntity
+    {   
+        foreach( $this->blocks as $block ) {
+            if ( $block->getSlug() == $slug ) {
+                return $block;
+            }
+        }
+        return null;
+    }
+
     public function findByAuthor($author): ?array
     {   
         $blocksByAuthor = [];
@@ -29,7 +39,7 @@ class BlockRepo
         return $blocksByAuthor;
     }
 
-    public function getBlocks(): ?self
+    public function getAll(): ?array
     {
         return $this->blocks;
     }
