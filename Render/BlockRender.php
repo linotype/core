@@ -28,49 +28,56 @@ class BlockRender
         $css = [];
 
         foreach( $this->block->getContext()->getAll() as $contextKey => $contextItem ) 
-        {       
-            $value = '';
-
+        {    
             //get override value
-            if ( isset( $override[ $contextItem->getId() ] ) && $override[ $contextItem->getId() ] ) 
-            {
-                if ( isset( $override[ $contextItem->getId() ]['value'] ) && $override[ $contextItem->getId() ]['value'] ) 
-                {
-                    $value = $override[ $contextItem->getId() ]['value'];
+            if ( isset( $override[ $contextItem->getId() ] ) && $override[ $contextItem->getId() ] )  {
+
+                if ( isset( $override[ $contextItem->getId() ] ) ) {
+                    foreach( $override[ $contextItem->getId() ] as $override_id => $override_value ) {
+                        switch ( $override_id ) {
+                            case 'value':
+                                $this->block->getContext()->getKey($contextKey)->setValue( $override_value );
+                            break;
+                            case 'css':
+                                $this->block->getContext()->getKey($contextKey)->setCss( $override_value );
+                            break;
+                        }
+                    }
+                    
                 }
             }
             
             //get persist value
-            if ( $contextItem->getPersist() == 'meta' ) {
-                $context_key = $this->block->getKey() . '__' . $contextItem->getId();
+            if ( $this->block->getContext()->getKey($contextKey)->getPersist() == 'meta' ) {
+                $meta_value = null;
+                $context_key = $this->block->getKey() . '__' . $this->block->getContext()->getKey($contextKey)->getId();
                 try {
-                    $value = LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ]) ? LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ])->getContextValue() : $value;
+                    $meta_value = LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ]) ? LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ])->getContextValue() : null;
                 } 
                 catch(\Exception $e){
-                    $value = $e->getMessage();
+                    $e->getMessage();
                 }
+                if ( $meta_value ) $this->block->getContext()->getKey($contextKey)->setValue( $meta_value );
             }
-
-            //set new value
-            if ( $value ) $this->block->getContext()->getKey($contextKey)->setValue( $value );
 
 
             //create custom js variable
-            if ( $value && $contextItem->getJs() ) {
+            if ( $this->block->getContext()->getKey($contextKey)->getValue() && $this->block->getContext()->getKey($contextKey)->getJs() ) {
                 if ( ! isset( $js[ '#' . $this->block->getCssId() ] ) ) $js[ $this->block->getCssId() ] = [];
-                $js[ $this->block->getCssId() ][ $contextKey ] = $value;
+                $js[ $this->block->getCssId() ][ $contextKey ] = $this->block->getContext()->getKey($contextKey)->getValue();
             }
 
             //create custom css variable
-            if ( $value && $contextItem->getCss() ) {
+            if ( $this->block->getContext()->getKey($contextKey)->getValue() && $this->block->getContext()->getKey($contextKey)->getCss() ) {
                 if ( ! isset( $css[ '#' . $this->block->getCssId() ] ) ) $css[ '#' . $this->block->getCssId() ] = [];
-                $css[ '#' . $this->block->getCssId() ][ '--' . $contextKey ] = $value;
+                $css[ '#' . $this->block->getCssId() ][ '--' . $contextKey ] = $this->block->getContext()->getKey($contextKey)->getValue();
             }
             
         }
         
         $this->block->setCustomJs( $js );
         $this->block->setCustomCss( $css );
+        
         
         return $this->block;
     }
