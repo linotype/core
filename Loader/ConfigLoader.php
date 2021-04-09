@@ -30,55 +30,54 @@ class ConfigLoader
     {
         $config = ['block' => [],'field' => [],'helper' => [],'module' => [],'template' => [],'theme' => [], 'linotype' => []];
         $finder = new Finder();
-        if ( ! file_exists( $this->dir ) ) {
-            throw new \Exception('Linotype: Project not found at "' . $this->dir . '"');
-        }
-        $finder->files()->name(['*.yml', '*.yaml'])->in($this->dir)->exclude('node_modules');
-        if ($finder->hasResults()) {
-            foreach ($finder as $file) {
-                $id = $file->getFilenameWithoutExtension();
-                $path = $file->getPathname();
-                $contents = Yaml::parse( file_get_contents($path) );
-                if ( isset( $config[ key($contents) ][$id] ) ) {
-                    throw new \Exception('Linotype: Config Yaml "' . key($contents) . '" with id "' . $id . '" already exist.');
-                }
-                $processor = new Processor();
-                switch(key($contents)){
-                    case 'block':
-                        $configModel = new BlockModel();
-                        $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
-                        $config[ key($contents) ][$id] = $processedConfiguration;
-                        break;
-                    case 'field':
-                        $configModel = new FieldModel();
-                        $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
-                        $config[ key($contents) ][$id] = $processedConfiguration;
-                        break;
-                    case 'helper':
-                        $configModel = new HelperModel();
-                        $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
-                        $config[ key($contents) ][$id] = $processedConfiguration;
-                        break;
-                    case 'module':
-                        $configModel = new ModuleModel();
-                        $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
-                        $config[ key($contents) ][$id] = $processedConfiguration;
-                        break;
-                    case 'template':
-                        $configModel = new TemplateModel();
-                        $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
-                        $config[ key($contents) ][$id] = $processedConfiguration;
-                        break;
-                    case 'theme':
-                        $configModel = new ThemeModel();
-                        $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
-                        $config[ key($contents) ][$id] = $processedConfiguration;
-                        break;
-                    case 'linotype':
-                        $configModel = new LinotypeModel();
-                        $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
-                        $config[ key($contents) ] = $processedConfiguration;
-                        break;
+        if ( file_exists( $this->dir ) ) {
+            $finder->files()->name(['*.yml', '*.yaml'])->in($this->dir)->exclude('node_modules');
+            if ($finder->hasResults()) {
+                foreach ($finder as $file) {
+                    $id = $file->getFilenameWithoutExtension();
+                    $path = $file->getPathname();
+                    $contents = Yaml::parse( file_get_contents($path) );
+                    if ( isset( $config[ key($contents) ][$id] ) ) {
+                        throw new \Exception('Linotype: Config Yaml "' . key($contents) . '" with id "' . $id . '" already exist.');
+                    }
+                    $processor = new Processor();
+                    switch(key($contents)){
+                        case 'block':
+                            $configModel = new BlockModel();
+                            $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
+                            $config[ key($contents) ][$id] = $processedConfiguration;
+                            break;
+                        case 'field':
+                            $configModel = new FieldModel();
+                            $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
+                            $config[ key($contents) ][$id] = $processedConfiguration;
+                            break;
+                        case 'helper':
+                            $configModel = new HelperModel();
+                            $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
+                            $config[ key($contents) ][$id] = $processedConfiguration;
+                            break;
+                        case 'module':
+                            $configModel = new ModuleModel();
+                            $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
+                            $config[ key($contents) ][$id] = $processedConfiguration;
+                            break;
+                        case 'template':
+                            $configModel = new TemplateModel();
+                            $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
+                            $config[ key($contents) ][$id] = $processedConfiguration;
+                            break;
+                        case 'theme':
+                            $configModel = new ThemeModel();
+                            $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
+                            $config[ key($contents) ][$id] = $processedConfiguration;
+                            break;
+                        case 'linotype':
+                            $configModel = new LinotypeModel();
+                            $processedConfiguration = $processor->processConfiguration( $configModel, $contents );
+                            $config[ key($contents) ] = $processedConfiguration;
+                            break;
+                    }
                 }
             }
         }
