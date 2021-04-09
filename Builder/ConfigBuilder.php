@@ -39,10 +39,10 @@ class ConfigBuilder
     {
         $linotype = new LinotypeEntity();
         $config = $this->configLoader->get('linotype');
-        $linotype->setVersion( $config['version'] );
-        $linotype->setDebug( $config['debug'] );
-        $linotype->setPreview( $config['preview'] );
-        $linotype->setActiveTheme( $config['theme'] ); 
+        $linotype->setVersion( isset( $config['version'] ) ? $config['version'] : 0 );
+        $linotype->setDebug( isset( $config['debug'] ) ? $config['debug'] : false );
+        $linotype->setPreview( isset( $config['preview'] ) ? $config['preview'] : false );
+        $linotype->setActiveTheme( isset( $config['theme'] ) ? $config['theme'] : '' ); 
 
         $blockRepo = new BlockRepo();
         foreach( $this->configLoader->get('block') as $config_id => $config ) 
