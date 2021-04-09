@@ -30,6 +30,9 @@ class ConfigLoader
     {
         $config = ['block' => [],'field' => [],'helper' => [],'module' => [],'template' => [],'theme' => [], 'linotype' => []];
         $finder = new Finder();
+        if ( ! file_exists( $this->dir ) ) {
+            throw new \Exception('Linotype: Project not found at "' . $this->dir . '"');
+        }
         $finder->files()->name(['*.yml', '*.yaml'])->in($this->dir)->exclude('node_modules');
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
