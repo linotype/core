@@ -14,7 +14,7 @@ class LinotypeCore
     public function __construct($metaRepo)
     {
         self::$db = $metaRepo;
-        $working_dir = dirname(dirname(dirname(dirname(__FILE__)))) . '/linotype-test';
+        $working_dir = dirname(dirname(dirname(dirname(__FILE__)))) . '/linotype';
         $configBuilder = new ConfigBuilder($working_dir);
         $configBuilder->build();
         $this->linotype = $configBuilder->get();
