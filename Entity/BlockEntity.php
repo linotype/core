@@ -7,6 +7,7 @@ use Linotype\Core\Entity\Traits\CustomCssTrait;
 use Linotype\Core\Entity\Traits\CustomJsTrait;
 use Linotype\Core\Entity\Traits\DefaultTrait;
 use Linotype\Core\Entity\Traits\KeyTrait;
+use Linotype\Core\Entity\Traits\TemplateRefTrait;
 
 class BlockEntity 
 {
@@ -15,6 +16,7 @@ class BlockEntity
     use KeyTrait;
     use CustomJsTrait;
     use CustomCssTrait;
+    use TemplateRefTrait;
 
     private $id;
 
