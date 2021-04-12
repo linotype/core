@@ -33,6 +33,10 @@ class FieldEntity
     
     private $require;
 
+    private $value;
+
+    private $default;
+
     private $format;
 
     private $option;
@@ -66,7 +70,7 @@ class FieldEntity
         return $this->help;
     }
 
-    public function setHelp(string $help): self
+    public function setHelp($help = ''): self
     {
         $this->help = $help;
 
@@ -81,6 +85,30 @@ class FieldEntity
     public function setRequire(bool $require): self
     {
         $this->require = $require;
+
+        return $this;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setValue($value = '')
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    public function setDefault($default = '')
+    {
+        $this->default = $default;
 
         return $this;
     }

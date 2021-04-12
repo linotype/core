@@ -44,6 +44,12 @@ class BlockEntity
 
     private $customCss;
 
+    // TODO: replace DeepCopy with __clone
+    // public function __clone()
+    // {
+    //     $this->context = clone $this->context;
+    // }
+
     public function getPackage(): ?array
     {
         return $this->package;

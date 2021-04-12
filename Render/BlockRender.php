@@ -2,6 +2,7 @@
 
 namespace Linotype\Core\Render;
 
+use DeepCopy\DeepCopy;
 use Linotype\Core\Context\BlockContext;
 use Linotype\Core\Context\BlockContextItem;
 use Linotype\Core\Entity\LinotypeEntity;
@@ -19,6 +20,7 @@ class BlockRender
     {
         $this->block = $block;
         $this->blocks = $linotype->getBlocks();
+        $this->fields = $linotype->getFields();
     }
 
     public function render($override = [])
@@ -29,20 +31,49 @@ class BlockRender
 
         foreach( $this->block->getContext()->getAll() as $contextKey => $contextItem ) 
         {    
+            
             //get override value
             if ( isset( $override[ $contextItem->getId() ] ) && $override[ $contextItem->getId() ] )  {
-
                 if ( isset( $override[ $contextItem->getId() ] ) ) {
                     foreach( $override[ $contextItem->getId() ] as $override_id => $override_value ) {
                         switch ( $override_id ) {
+                            case 'name':
+                            case 'title':
+                                $contextItem->setName($override_value);
+                            break;
+                            case 'desc':
+                            case 'helper':
+                                $contextItem->setDesc($override_value);
+                            break;
+                            case 'field':
+                                $contextItem->setField($override_value);
+                            break;
+                            case 'option':
+                                $contextItem->setOption($override_value);
+                            break;
+                            case 'persist':
+                                $contextItem->setPersist($override_value);
+                            break;
                             case 'value':
-                                $this->block->getContext()->getKey($contextKey)->setValue( $override_value );
+                                $contextItem->setValue($override_value);
                             break;
                             case 'default':
-                                $this->block->getContext()->getKey($contextKey)->setDefault( $override_value );
+                                $contextItem->setDefault($override_value);
+                            break;
+                            case 'preview':
+                                $contextItem->setPreview($override_value);
+                            break;
+                            case 'format':
+                                $contextItem->setFormat($override_value);
+                            break;
+                            case 'debug':
+                                $contextItem->setDebug($override_value);
+                            break;
+                            case 'js':
+                                $contextItem->setJs($override_value);
                             break;
                             case 'css':
-                                $this->block->getContext()->getKey($contextKey)->setCss( $override_value );
+                                $contextItem->setCss($override_value);
                             break;
                         }
                     }
@@ -51,29 +82,43 @@ class BlockRender
             }
             
             //get persist value
-            if ( $this->block->getContext()->getKey($contextKey)->getPersist() == 'meta' ) {
+            if ( $contextItem->getPersist() == 'meta' ) {
                 $meta_value = null;
-                $context_key = $this->block->getKey() . '__' . $this->block->getContext()->getKey($contextKey)->getId();
+                $context_key = $this->block->getKey() . '__' . $contextItem->getId();
                 try {
                     $meta_value = LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ]) ? LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ])->getContextValue() : null;
                 } 
                 catch(\Exception $e){
                     $e->getMessage();
                 }
-                if ( $meta_value ) $this->block->getContext()->getKey($contextKey)->setValue( $meta_value );
+                if ( $meta_value ) $contextItem->setValue( $meta_value );
             }
 
 
             //create custom js variable
-            if ( $this->block->getContext()->getKey($contextKey)->getValue() && $this->block->getContext()->getKey($contextKey)->getJs() ) {
+            if ( $contextItem->getValue() && $contextItem->getJs() ) {
                 if ( ! isset( $js[ '#' . $this->block->getCssId() ] ) ) $js[ $this->block->getCssId() ] = [];
-                $js[ $this->block->getCssId() ][ $contextKey ] = $this->block->getContext()->getKey($contextKey)->getValue();
+                $js[ $this->block->getCssId() ][ $contextKey ] = $contextItem->getValue();
             }
 
             //create custom css variable
-            if ( $this->block->getContext()->getKey($contextKey)->getValue() && $this->block->getContext()->getKey($contextKey)->getCss() ) {
+            if ( $contextItem->getValue() && $contextItem->getCss() ) {
                 if ( ! isset( $css[ '#' . $this->block->getCssId() ] ) ) $css[ '#' . $this->block->getCssId() ] = [];
-                $css[ '#' . $this->block->getCssId() ][ '--' . $contextKey ] = $this->block->getContext()->getKey($contextKey)->getValue();
+                $css[ '#' . $this->block->getCssId() ][ '--' . $contextKey ] = $contextItem->getValue();
+            }
+
+            //set field and override title, help, require and options
+            if ( $contextItem->getField() ) {
+                if ( $contextItem->getPersist() == 'meta' ) {
+                    $field = (new DeepCopy())->copy( $this->fields->findById( $contextItem->getField() ) );
+                    $field->setKey( $this->block->getKey() . '__' . $contextItem->getId() );
+                    $field->setTitle( $contextItem->getName() );
+                    $field->setHelp( $contextItem->getDesc() );
+                    if ( $contextItem->getValue() != $contextItem->getDefault() ) {
+                        $field->setValue( $contextItem->getValue() );
+                    }
+                    $contextItem->setFieldEntity( $field );
+                }
             }
             
         }

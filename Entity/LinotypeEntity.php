@@ -8,7 +8,6 @@ use Linotype\Core\Repo\HelperRepo;
 use Linotype\Core\Repo\ModuleRepo;
 use Linotype\Core\Repo\TemplateRepo;
 use Linotype\Core\Repo\ThemeRepo;
-use Linotype\Core\Builder\ActiveBuilder;
 use Linotype\Core\Builder\CurrentBuilder;
 
 class LinotypeEntity
@@ -154,18 +153,6 @@ class LinotypeEntity
     public function setThemes(ThemeRepo $themes): self
     {
         $this->themes = $themes;
-
-        return $this;
-    }
-
-    public function getActive(): ?ActiveBuilder
-    {   
-        return $this->active;
-    }
-
-    public function setActive(ActiveBuilder $active): self
-    {
-        $this->active = $active;
 
         return $this;
     }

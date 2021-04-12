@@ -2,6 +2,8 @@
 
 namespace Linotype\Core\Context;
 
+use Linotype\Core\Entity\FieldEntity;
+
 class BlockContextItem
 {
 
@@ -14,6 +16,8 @@ class BlockContextItem
     private $desc;
 
     private $field;
+
+    private $field_entity;
 
     private $option;
 
@@ -89,6 +93,18 @@ class BlockContextItem
     public function setField(string $field): self
     {
         $this->field = $field;
+
+        return $this;
+    }
+
+    public function getFieldEntity(): ?FieldEntity
+    {
+        return $this->field_entity;
+    }
+
+    public function setFieldEntity(FieldEntity $field_entity): self
+    {
+        $this->field_entity = $field_entity;
 
         return $this;
     }
