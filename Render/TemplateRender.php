@@ -5,6 +5,7 @@ namespace Linotype\Core\Render;
 use DeepCopy\DeepCopy;
 use Linotype\Core\Entity\LinotypeEntity;
 use Linotype\Core\Entity\TemplateEntity;
+use Linotype\Core\LinotypeCore;
 
 class TemplateRender
 {
@@ -25,11 +26,12 @@ class TemplateRender
     {
         $this->template = $template;
         
+        //set doctrine database ref if exist
+        $templateEntityExist = LinotypeCore::getDoctrine('repository','template')->findOneBy(['template_key' => $this->template->getKey() ]);
+        if ( $templateEntityExist ) $this->template->setTemplateRef( $templateEntityExist->getId() );
+
         $this->output = [];
         foreach( $this->template->getLayout() as $item_key => $item ) {
-
-            //create unique block key with module key reference
-            if( $this->template->getKey() ) $item_key = $this->template->getKey() . '__' . $item_key;
 
             if ( isset( $item['module'] ) && $item['module'] !== "" ) {
 
@@ -38,6 +40,9 @@ class TemplateRender
                 
                 //set unique module key
                 $module->setKey($item_key);
+
+                //set doctrine template ref id
+                $module->setTemplateRef($this->template->getTemplateRef());
 
                 //get blocks from the module
                 $moduleRender = new ModuleRender( $module, $this->linotype );
@@ -54,6 +59,9 @@ class TemplateRender
                 
                 //set unique module key
                 $block->setKey($item_key);
+
+                //set doctrine template ref id
+                $block->setTemplateRef($this->template->getTemplateRef());
 
                 if ( isset( $item['children'] ) && is_array( $item['children'] ) && ! empty( $item['children'] ) ) {
                     $block->setChildren( $this->renderChildren( $item['children'], $item_key ) );
@@ -81,6 +89,9 @@ class TemplateRender
             //set unique module key
             $block->setKey($deep_key . '--' . $child_key);
             
+            //set doctrine template ref id
+            $block->setTemplateRef($this->template->getTemplateRef());
+
             //get blocks from the module
             $blockRender = new BlockRender( $block, $this->linotype );
 

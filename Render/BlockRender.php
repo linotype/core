@@ -86,7 +86,8 @@ class BlockRender
                 $meta_value = null;
                 $context_key = $this->block->getKey() . '__' . $contextItem->getId();
                 try {
-                    $meta_value = LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ]) ? LinotypeCore::$db->findOneBy([ 'context_key' => $context_key ])->getContextValue() : null;
+                    $meta_object = LinotypeCore::getDoctrine('repository','meta')->findOneBy([ 'context_key' => $context_key, 'template_id' => $this->block->getTemplateRef() ]);
+                    $meta_value = $meta_object ? $meta_object->getContextValue() : null;
                 } 
                 catch(\Exception $e){
                     $e->getMessage();
