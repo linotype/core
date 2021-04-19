@@ -111,13 +111,45 @@ class BlockRender
             //set field and override title, help, require and options
             if ( $contextItem->getField() ) {
                 if ( $contextItem->getPersist() == 'meta' ) {
+
+                    //clone field object
                     $field = (new DeepCopy())->copy( $this->fields->findById( $contextItem->getField() ) );
+
+                    //set context key
                     $field->setKey( $this->block->getKey() . '__' . $contextItem->getId() );
+
+                    //replace field title with context title
                     $field->setTitle( $contextItem->getName() );
+
+                    //replace field description with context title
                     $field->setHelp( $contextItem->getDesc() );
+
+                    //define field default value from default context (to use as placeholder)
+                    $field->setDefault( $contextItem->getDefault() );
+
+                    //override field option with context option 
+                    $option = $field->getOption();
+                    foreach ( $contextItem->getOption() as $option_key => $option_value ) {
+                        $option[ $option_key ] = $option_value;
+                    }
+                    $field->setOption( $option );
+
+                    //save option as css and js values
+                    $field_js = [];
+                    $field_css = [];
+                    foreach( $field->getOption() as $option_key => $option_value ) {
+                        $field_js[ $field->getCssId() ][ $option_key ] = $option_value;
+                        if ( ! is_array( $option_value ) && ! is_object( $option_value ) ) $field_css[ '#' . $field->getCssId() ][ '--' . $option_key ] = $option_value;
+                    }
+                    $field->setCustomJs( $field_js );
+                    $field->setCustomCss( $field_css );
+
+                    //define field value with context dynamic value
                     if ( $contextItem->getValue() != $contextItem->getDefault() ) {
                         $field->setValue( $contextItem->getValue() );
                     }
+
+                    //set field entity in block object
                     $contextItem->setFieldEntity( $field );
                 }
             }

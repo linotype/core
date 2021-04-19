@@ -19,7 +19,7 @@ class BlockContextItem
 
     private $field_entity;
 
-    private $option;
+    private $option = [];
 
     private $persist;
 
@@ -114,7 +114,7 @@ class BlockContextItem
         return $this->option;
     }
 
-    public function setOption( $option = []): self
+    public function setOption( array $option = []): self
     {
         $this->option = $option;
 

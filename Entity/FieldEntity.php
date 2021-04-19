@@ -2,6 +2,8 @@
 
 namespace Linotype\Core\Entity;
 
+use Linotype\Core\Entity\Traits\CustomCssTrait;
+use Linotype\Core\Entity\Traits\CustomJsTrait;
 use Linotype\Core\Entity\Traits\DefaultTrait;
 use Linotype\Core\Entity\Traits\KeyTrait;
 use Linotype\Core\Entity\Traits\TemplateRefTrait;
@@ -11,6 +13,8 @@ class FieldEntity
 
     use DefaultTrait;
     use KeyTrait;
+    use CustomJsTrait;
+    use CustomCssTrait;
     use TemplateRefTrait;
 
     private $id;
@@ -42,6 +46,10 @@ class FieldEntity
     private $format;
 
     private $option;
+
+    private $customJs;
+
+    private $customCss;
 
     public function getPackage(): ?array
     {

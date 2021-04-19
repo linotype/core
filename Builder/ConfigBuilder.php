@@ -64,7 +64,7 @@ class ConfigBuilder
                 $context_item->setName($context_value['name']);
                 $context_item->setDesc($context_value['desc']);
                 $context_item->setField($context_value['field']);
-                $context_item->setOption($context_value['option']);
+                $context_item->setOption( $context_value['option'] ? $context_value['option'] : [] );
                 $context_item->setPersist($context_value['persist']);
                 $context_item->setDefault($context_value['default']);
                 $context_item->setPreview($context_value['preview']);

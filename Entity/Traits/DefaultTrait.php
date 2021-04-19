@@ -57,7 +57,7 @@ trait DefaultTrait
 
     public function setCssClass(string $cssClass): self
     {
-        $this->cssClass = 'block--' . strtolower( preg_replace('/([a-z])([A-Z])/s','$1-$2', $cssClass ) );
+        $this->cssClass = strtolower( preg_replace('/([a-z])([A-Z])/s','$1-$2', $cssClass ) );
 
         return $this;
     }
