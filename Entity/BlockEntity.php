@@ -42,9 +42,13 @@ class BlockEntity
     
     private $children;
 
-    private $customJs;
+    private $custom_js;
 
-    private $customCss;
+    private $custom_css;
+
+    private $title;
+    
+    private $help;
 
     // TODO: replace DeepCopy with __clone
     // public function __clone()
@@ -108,6 +112,30 @@ class BlockEntity
     public function setChildren(array $children): self
     {
         $this->children = $children;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getHelp(): ?string
+    {
+        return $this->help;
+    }
+
+    public function setHelp(string $help): self
+    {
+        $this->help = $help;
 
         return $this;
     }

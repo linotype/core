@@ -35,6 +35,12 @@ class ModuleRender
                 //set block key
                 $block->setKey($item_key);
               
+                //set block custom title from map to display as fields section
+                $block->setTitle( $item['title'] );
+
+                //set block custom help from map to display as fields section
+                $block->setHelp( $item['help'] );
+                
                 //set doctrine template ref id
                 $block->setTemplateRef($this->module->getTemplateRef());
 
