@@ -47,9 +47,9 @@ class FieldEntity
 
     private $option;
 
-    private $customJs;
+    private $custom_js;
 
-    private $customCss;
+    private $custom_css;
 
     public function getPackage(): ?array
     {
