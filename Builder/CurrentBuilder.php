@@ -29,9 +29,9 @@ class CurrentBuilder
         $this->template = new TemplateRender( $linotype );
     }
 
-    public function render(TemplateEntity $template): ?array
+    public function render(TemplateEntity $template, $database_id = null): ?array
     {
-        return $this->template->render($template);
+        return $this->template->render($template, $database_id);
     }
     
     public function getTheme(): ?ThemeEntity

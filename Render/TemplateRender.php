@@ -22,12 +22,12 @@ class TemplateRender
         $this->blocks = $linotype->getBlocks();
     }
 
-    public function render(TemplateEntity $template)
+    public function render(TemplateEntity $template, $database_id = null )
     {
         $this->template = $template;
         
         //set doctrine database ref if exist
-        $templateEntityExist = LinotypeCore::getDoctrine('repository','template')->findOneBy(['template_key' => $this->template->getKey() ]);
+        $templateEntityExist = LinotypeCore::getDoctrine('repository','template')->findOneBy(['id' => $database_id ]);
         if ( $templateEntityExist ) $this->template->setTemplateRef( $templateEntityExist->getId() );
 
         $this->output = [];
