@@ -82,17 +82,19 @@ class BlockRender
             }
             
             //get persist value
-            if ( $contextItem->getPersist() == 'meta' ) {
-                $meta_value = null;
-                $context_key = $this->block->getKey() . '__' . $contextItem->getId();
-                try {
-                    $meta_object = LinotypeCore::getDoctrine('repository','meta')->findOneBy([ 'context_key' => $context_key, 'template_id' => $this->block->getTemplateRef() ]);
-                    $meta_value = $meta_object ? $meta_object->getContextValue() : null;
-                } 
-                catch(\Exception $e){
-                    $e->getMessage();
+            if ( $this->block->getTemplateRef() ) {
+                if ( $contextItem->getPersist() == 'meta' ) {
+                    $meta_value = null;
+                    $context_key = $this->block->getKey() . '__' . $contextItem->getId();
+                    try {
+                        $meta_object = LinotypeCore::getDoctrine('repository','meta')->findOneBy([ 'context_key' => $context_key, 'template_id' => $this->block->getTemplateRef() ]);
+                        $meta_value = $meta_object ? $meta_object->getContextValue() : null;
+                    } 
+                    catch(\Exception $e){
+                        $e->getMessage();
+                    }
+                    if ( $meta_value ) $contextItem->setValue( $meta_value );
                 }
-                if ( $meta_value ) $contextItem->setValue( $meta_value );
             }
 
 

@@ -27,9 +27,11 @@ class TemplateRender
         $this->template = $template;
         
         //set doctrine database ref if exist
-        $templateEntityExist = LinotypeCore::getDoctrine('repository','template')->findOneBy(['id' => $database_id ]);
-        if ( $templateEntityExist ) $this->template->setTemplateRef( $templateEntityExist->getId() );
-
+        if ( $database_id ) {
+            $templateEntityExist = LinotypeCore::getDoctrine('repository','template')->findOneBy(['id' => $database_id ]);
+            if ( $templateEntityExist ) $this->template->setTemplateRef( $templateEntityExist->getId() );
+        }
+        
         $this->output = [];
         foreach( $this->template->getLayout() as $item_key => $item ) {
 
