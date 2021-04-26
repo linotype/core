@@ -4,6 +4,7 @@ namespace Linotype\Core\Render;
 
 use DeepCopy\DeepCopy;
 use Linotype\Core\Entity\LinotypeEntity;
+use Linotype\Core\Entity\ThemeEntity;
 
 class ThemeRender
 {
@@ -20,9 +21,9 @@ class ThemeRender
         $this->TemplateRender = new TemplateRender( $linotype );
     }
 
-    public function render(string $theme_id)
+    public function render(ThemeEntity $theme)
     {
-        $this->theme = $this->themes->getTheme($theme_id);
+        $this->theme = $theme;
 
         $this->output = [];
         foreach( $this->theme->getMap() as $item_key => $item ) {

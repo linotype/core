@@ -67,7 +67,7 @@ class BlockModel implements ConfigurationInterface
                             ->info('')
                             ->end()
                         ->enumNode('persist')
-                            ->values(['static', 'meta', 'option'])
+                            ->values(['static', 'meta', 'option','both'])
                             ->defaultValue('static')
                             ->info('')
                             ->end()

@@ -82,8 +82,26 @@ class BlockRender
             }
             
             //get persist value
+            if ( $contextItem->getPersist() == 'option' || $contextItem->getPersist() == 'both' ) {
+                $option_value = null;
+                $context_key = $this->block->getKey() . '__' . $contextItem->getId();
+                try {
+                    $option_object = LinotypeCore::getDoctrine('repository','option')->findOneBy([ 'option_key' => $context_key ]);
+                    $option_value = $option_object ? $option_object->getOptionValue() : null;
+                } 
+                catch(\Exception $e){
+                    $e->getMessage();
+                }
+                if ( $option_value ) {
+                    if ( $this->block->getTemplateRef() ) {
+                        $contextItem->setDefault( $option_value );
+                    } else {
+                        $contextItem->setValue( $option_value );
+                    }
+                }
+            }
             if ( $this->block->getTemplateRef() ) {
-                if ( $contextItem->getPersist() == 'meta' ) {
+                if ( $contextItem->getPersist() == 'meta' || $contextItem->getPersist() == 'both' ) {
                     $meta_value = null;
                     $context_key = $this->block->getKey() . '__' . $contextItem->getId();
                     try {
@@ -112,7 +130,7 @@ class BlockRender
 
             //set field and override title, help, require and options
             if ( $contextItem->getField() ) {
-                if ( $contextItem->getPersist() == 'meta' ) {
+                if ( $contextItem->getPersist() == 'meta' || $contextItem->getPersist() == 'option' || $contextItem->getPersist() == 'both' ) {
 
                     //clone field object
                     $field = (new DeepCopy())->copy( $this->fields->findById( $contextItem->getField() ) );

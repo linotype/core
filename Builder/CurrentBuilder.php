@@ -6,6 +6,7 @@ use Linotype\Core\Entity\LinotypeEntity;
 use Linotype\Core\Entity\TemplateEntity;
 use Linotype\Core\Entity\ThemeEntity;
 use Linotype\Core\Render\TemplateRender;
+use Linotype\Core\Render\ThemeRender;
 use Linotype\Core\Repo\ThemeRepo;
 
 class CurrentBuilder
@@ -13,30 +14,27 @@ class CurrentBuilder
 
     public $theme;
 
-    public $template;
-
-    public $modules;
-
-    public $helpers;
-
-    public $fields;
-
-    public $blocks;
-
     function __construct( LinotypeEntity $linotype )
     {
-        $this->theme = $linotype->getThemes()->getTheme( $linotype->getActiveTheme() );
-        $this->template = new TemplateRender( $linotype );
+        $this->linotype = $linotype;
+        $this->theme = $linotype->getThemes()->getTheme( $this->linotype->getActiveTheme() );
+        $this->theme_render = new ThemeRender( $this->linotype );
+        $this->template_render = new TemplateRender( $this->linotype );
     }
 
-    public function render(TemplateEntity $template, $database_id = null): ?array
-    {
-        return $this->template->render($template, $database_id);
-    }
-    
     public function getTheme(): ?ThemeEntity
     {
         return $this->theme;
     }
 
+    public function renderTheme(): ?array
+    {
+        return $this->theme_render->render( $this->theme );
+    }
+
+    public function renderTemplate(TemplateEntity $template, $database_id = null): ?array
+    {
+        return $this->template_render->render($template, $database_id);
+    }
+    
 }

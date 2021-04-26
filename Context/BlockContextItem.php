@@ -128,7 +128,7 @@ class BlockContextItem
 
     public function setPersist(string $persist = 'static'): self
     {
-        if ( in_array( $persist, ['static','meta','option'] ) ) {
+        if ( in_array( $persist, ['static','meta','option','both'] ) ) {
             $this->persist = $persist;
         } else {
             $this->persist = 'static';
