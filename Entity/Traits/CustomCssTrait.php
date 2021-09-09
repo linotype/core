@@ -5,16 +5,16 @@ namespace Linotype\Core\Entity\Traits;
 trait CustomCssTrait
 {
     
-    private $customCss;
+    private $custom_css;
     
     public function getCustomCss(): ?array
     {
-        return $this->customCss;
+        return $this->custom_css;
     }
 
-    public function setCustomCss(array $customCss): self
+    public function setCustomCss(array $custom_css): self
     {
-        $this->customCss = $customCss;
+        $this->custom_css = $custom_css;
 
         return $this;
     }

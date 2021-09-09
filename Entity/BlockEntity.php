@@ -7,6 +7,7 @@ use Linotype\Core\Entity\Traits\CustomCssTrait;
 use Linotype\Core\Entity\Traits\CustomJsTrait;
 use Linotype\Core\Entity\Traits\DefaultTrait;
 use Linotype\Core\Entity\Traits\KeyTrait;
+use Linotype\Core\Entity\Traits\TemplateRefTrait;
 
 class BlockEntity 
 {
@@ -15,6 +16,7 @@ class BlockEntity
     use KeyTrait;
     use CustomJsTrait;
     use CustomCssTrait;
+    use TemplateRefTrait;
 
     private $id;
 
@@ -40,9 +42,19 @@ class BlockEntity
     
     private $children;
 
-    private $customJs;
+    private $custom_js;
 
-    private $customCss;
+    private $custom_css;
+
+    private $title;
+    
+    private $help;
+
+    // TODO: replace DeepCopy with __clone
+    // public function __clone()
+    // {
+    //     $this->context = clone $this->context;
+    // }
 
     public function getPackage(): ?array
     {
@@ -100,6 +112,30 @@ class BlockEntity
     public function setChildren(array $children): self
     {
         $this->children = $children;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getHelp(): ?string
+    {
+        return $this->help;
+    }
+
+    public function setHelp(string $help): self
+    {
+        $this->help = $help;
 
         return $this;
     }

@@ -4,12 +4,14 @@ namespace Linotype\Core\Entity;
 
 use Linotype\Core\Entity\Traits\DefaultTrait;
 use Linotype\Core\Entity\Traits\KeyTrait;
+use Linotype\Core\Entity\Traits\TemplateRefTrait;
 
 class HelperEntity
 {
 
     use DefaultTrait;
     use KeyTrait;
+    use TemplateRefTrait;
 
     private $id;
 

@@ -35,6 +35,15 @@ class ModuleRender
                 //set block key
                 $block->setKey($item_key);
               
+                //set block custom title from map to display as fields section
+                $block->setTitle( $item['title'] );
+
+                //set block custom help from map to display as fields section
+                $block->setHelp( $item['help'] );
+                
+                //set doctrine template ref id
+                $block->setTemplateRef($this->module->getTemplateRef());
+
                 if ( isset( $item['children'] ) && is_array( $item['children'] ) && ! empty( $item['children'] ) ) {
                     $block->setChildren( $this->renderChildren( $item['children'], $item_key ) );
                 }
@@ -60,6 +69,9 @@ class ModuleRender
             //set unique module key
             $block->setKey($deep_key . '--' . $child_key);
             
+            //set doctrine template ref id
+            $block->setTemplateRef($this->module->getTemplateRef());
+
             //get blocks from the module
             $blockRender = new BlockRender( $block, $this->linotype );
 

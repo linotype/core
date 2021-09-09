@@ -2,6 +2,8 @@
 
 namespace Linotype\Core\Context;
 
+use Linotype\Core\Entity\FieldEntity;
+
 class BlockContextItem
 {
 
@@ -15,7 +17,9 @@ class BlockContextItem
 
     private $field;
 
-    private $option;
+    private $field_entity;
+
+    private $option = [];
 
     private $persist;
 
@@ -93,12 +97,24 @@ class BlockContextItem
         return $this;
     }
 
+    public function getFieldEntity(): ?FieldEntity
+    {
+        return $this->field_entity;
+    }
+
+    public function setFieldEntity(FieldEntity $field_entity): self
+    {
+        $this->field_entity = $field_entity;
+
+        return $this;
+    }
+
     public function getOption(): ?array
     {
         return $this->option;
     }
 
-    public function setOption( $option = []): self
+    public function setOption( array $option = []): self
     {
         $this->option = $option;
 
@@ -112,7 +128,7 @@ class BlockContextItem
 
     public function setPersist(string $persist = 'static'): self
     {
-        if ( in_array( $persist, ['static','meta','option'] ) ) {
+        if ( in_array( $persist, ['static','meta','option','both'] ) ) {
             $this->persist = $persist;
         } else {
             $this->persist = 'static';

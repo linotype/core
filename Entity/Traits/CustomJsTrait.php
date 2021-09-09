@@ -5,16 +5,16 @@ namespace Linotype\Core\Entity\Traits;
 trait CustomJsTrait
 {
     
-    private $customJs;
+    private $custom_js;
     
     public function getCustomJs(): ?array
     {
-        return $this->customJs;
+        return $this->custom_js;
     }
 
-    public function setCustomJs(array $customJs): self
+    public function setCustomJs(array $custom_js): self
     {
-        $this->customJs = $customJs;
+        $this->custom_js = $custom_js;
 
         return $this;
     }

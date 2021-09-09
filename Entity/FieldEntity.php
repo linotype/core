@@ -2,14 +2,20 @@
 
 namespace Linotype\Core\Entity;
 
+use Linotype\Core\Entity\Traits\CustomCssTrait;
+use Linotype\Core\Entity\Traits\CustomJsTrait;
 use Linotype\Core\Entity\Traits\DefaultTrait;
 use Linotype\Core\Entity\Traits\KeyTrait;
+use Linotype\Core\Entity\Traits\TemplateRefTrait;
 
 class FieldEntity
 {
 
     use DefaultTrait;
     use KeyTrait;
+    use CustomJsTrait;
+    use CustomCssTrait;
+    use TemplateRefTrait;
 
     private $id;
 
@@ -33,9 +39,17 @@ class FieldEntity
     
     private $require;
 
+    private $value;
+
+    private $default;
+
     private $format;
 
     private $option;
+
+    private $custom_js;
+
+    private $custom_css;
 
     public function getPackage(): ?array
     {
@@ -66,7 +80,7 @@ class FieldEntity
         return $this->help;
     }
 
-    public function setHelp(string $help): self
+    public function setHelp($help = ''): self
     {
         $this->help = $help;
 
@@ -81,6 +95,30 @@ class FieldEntity
     public function setRequire(bool $require): self
     {
         $this->require = $require;
+
+        return $this;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setValue($value = '')
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    public function setDefault($default = '')
+    {
+        $this->default = $default;
 
         return $this;
     }

@@ -12,7 +12,6 @@ use Linotype\Core\Entity\ModuleEntity;
 use Linotype\Core\Entity\TemplateEntity;
 use Linotype\Core\Entity\ThemeEntity;
 use Linotype\Core\Loader\ConfigLoader;
-use Linotype\Core\Repo\BlockContextList;
 use Linotype\Core\Repo\BlockRepo;
 use Linotype\Core\Repo\FieldRepo;
 use Linotype\Core\Repo\HelperRepo;
@@ -65,9 +64,8 @@ class ConfigBuilder
                 $context_item->setName($context_value['name']);
                 $context_item->setDesc($context_value['desc']);
                 $context_item->setField($context_value['field']);
-                $context_item->setOption($context_value['option']);
+                $context_item->setOption( $context_value['option'] ? $context_value['option'] : [] );
                 $context_item->setPersist($context_value['persist']);
-                // $context_item->setValue($context_value['value']);
                 $context_item->setDefault($context_value['default']);
                 $context_item->setPreview($context_value['preview']);
                 $context_item->setFormat($context_value['format']);
@@ -156,13 +154,13 @@ class ConfigBuilder
             $item->setAuthor($config['author']);
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
+            $item->setLocale($config['locale']);
+            $item->setLocales($config['locales']);
             $item->setMap($config['map']);
             $item->setInfo( 'theme', $config_id, $this->directory . '/Theme' );
             $themeRepo->addTheme( $item );
         }
         $linotype->setThemes( $themeRepo );
-
-        // $linotype->setActive( new ActiveBuilder( $linotype ) );
 
         $linotype->setCurrent( new CurrentBuilder( $linotype ) );
 
