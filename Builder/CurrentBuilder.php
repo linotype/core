@@ -36,5 +36,17 @@ class CurrentBuilder
     {
         return $this->template_render->render($template, $database_id);
     }
+
+    public function renderTemplateFields(TemplateEntity $template, $database_id = null): ?array
+    {   
+        $fields = [];
+        $blocks = $this->template_render->render($template, $database_id);
+        foreach ( $blocks as $block ) {
+            foreach ( $block->getContext()->getAll() as $context ) {
+                $fields[ $block->getKey() . '__' . $context->getId() ] = $context;
+            }
+        }
+        return $fields;
+    }
     
 }

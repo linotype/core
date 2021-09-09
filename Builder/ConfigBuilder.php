@@ -154,6 +154,8 @@ class ConfigBuilder
             $item->setAuthor($config['author']);
             $item->setName($config['name']);
             $item->setDesc($config['desc']);
+            $item->setLocale($config['locale']);
+            $item->setLocales($config['locales']);
             $item->setMap($config['map']);
             $item->setInfo( 'theme', $config_id, $this->directory . '/Theme' );
             $themeRepo->addTheme( $item );
