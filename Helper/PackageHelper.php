@@ -1,6 +1,6 @@
 <?php
 
-namespace Linotype\Core\Entity;
+namespace Linotype\Core\Helper;
 
 class PackageHelper
 {
